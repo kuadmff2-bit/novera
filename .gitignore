@@ -40,18 +40,3 @@ next-env.d.ts
 /.sites-runtime/
 /outputs/
 /work/
-
-# unused starter examples and component catalog
-/app/chatgpt-auth.ts
-/components/
-/components.json
-/db/
-/drizzle/
-/drizzle.config.ts
-/examples/
-/hooks/
-/lib/
-/tests/
-/public/file.svg
-/public/globe.svg
-/public/window.svg
