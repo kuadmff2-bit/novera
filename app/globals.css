@@ -97,6 +97,14 @@ button,
 canvas { -webkit-tap-highlight-color: transparent; }
 button { font: inherit; }
 
+.scrollbar-thin { scrollbar-width: thin; scrollbar-gutter: stable; }
+.scrollbar-none { scrollbar-width: none; }
+.scroll-fade {
+  mask-image: linear-gradient(to bottom, transparent, #000 12px, #000 calc(100% - 12px), transparent);
+}
+@keyframes scroll-fade-reveal-b { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tw-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
 .game-shell {
   position: relative;
   width: 100vw;
@@ -238,6 +246,32 @@ button { font: inherit; }
 .mission-cluster b { margin-left: 4px; color: #f0f7f4; font-size: .95rem; }
 .mission-cluster i { width: 3px; height: 3px; background: #ff5a24; transform: rotate(45deg); }
 
+.minimap-panel {
+  position: absolute;
+  top: 25px;
+  left: clamp(20px, 3vw, 42px);
+  width: clamp(126px, 12vw, 164px);
+  padding: 8px;
+  border: 1px solid rgba(210, 235, 230, .22);
+  background: linear-gradient(145deg, rgba(3, 9, 9, .91), rgba(3, 9, 9, .53));
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .28);
+  clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 0 100%);
+}
+.minimap-panel > div { display: flex; justify-content: space-between; align-items: center; padding: 0 2px 6px; }
+.minimap-panel span,
+.minimap-panel b,
+.minimap-panel small {
+  color: rgba(227, 242, 238, .66);
+  font-family: var(--font-mono);
+  font-size: .55rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+.minimap-panel b { color: rgba(115, 218, 220, .74); font-size: .52rem; }
+.minimap-panel canvas { display: block; width: 100%; height: auto; }
+.minimap-panel small { display: flex; align-items: center; gap: 5px; padding: 6px 2px 0; font-size: .48rem; }
+.minimap-panel small i { width: 5px; height: 5px; border-radius: 50%; background: #ff5a2b; box-shadow: 0 0 6px #ff5a2b; }
+
 .hud-actions {
   position: absolute;
   top: 26px;
@@ -246,6 +280,34 @@ button { font: inherit; }
   gap: 8px;
   pointer-events: auto;
 }
+
+.weapon-rack {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  display: flex;
+  gap: 5px;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+.weapon-rack button {
+  display: flex;
+  min-width: 92px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border: 1px solid rgba(222, 240, 235, .14);
+  color: rgba(227, 240, 236, .4);
+  background: rgba(3, 8, 8, .67);
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: color .14s ease, border-color .14s ease, background .14s ease;
+}
+.weapon-rack button span { color: rgba(255, 105, 52, .55); font-size: .57rem; }
+.weapon-rack button b { font-size: .62rem; letter-spacing: .08em; }
+.weapon-rack button:hover,
+.weapon-rack button.is-active { border-color: rgba(255, 100, 47, .65); color: #f4faf8; background: rgba(43, 19, 10, .84); }
+.weapon-rack button.is-active span { color: #ff6934; }
 .icon-button {
   display: grid;
   width: 42px;
@@ -414,6 +476,29 @@ button { font: inherit; }
 }
 .touch-instructions { display: none; }
 
+.sensitivity-control {
+  width: min(330px, 76vw);
+  padding: 12px 14px 14px;
+  border: 1px solid rgba(226, 242, 237, .18);
+  background: rgba(3, 9, 9, .7);
+}
+.sensitivity-control > div { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
+.sensitivity-control span,
+.sensitivity-control output {
+  color: rgba(227, 241, 237, .58);
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+.sensitivity-control output { color: #ff7745; font-size: .68rem; }
+.sensitivity-control [data-slot="slider"] { cursor: pointer; }
+.sensitivity-control [data-slot="slider-track"] { height: 3px; background: rgba(226, 240, 236, .19); }
+.sensitivity-control [data-slot="slider-range"] { background: #ff6530; }
+.sensitivity-control [data-slot="slider-thumb"] { width: 15px; height: 15px; border-color: #ff7544; background: #f3faf7; }
+.menu-sensitivity { margin-top: 22px; }
+.pause-sensitivity { margin-top: 7px; }
+
 .menu-sound {
   position: absolute;
   right: clamp(24px, 4vw, 60px);
@@ -543,7 +628,10 @@ button { font: inherit; }
   pointer-events: auto;
 }
 .reload-button,
+.weapon-button,
+.aim-button,
 .fire-button { display: grid; place-items: center; border-radius: 50%; color: #eef6f3; touch-action: none; }
+.weapon-button,
 .reload-button {
   width: 54px;
   height: 54px;
@@ -552,6 +640,15 @@ button { font: inherit; }
   font-family: var(--font-mono);
   font-weight: 900;
 }
+.weapon-button { border-color: rgba(92, 211, 214, .46); color: #81dfe1; }
+.aim-button {
+  width: 64px;
+  height: 64px;
+  border: 1px solid rgba(235, 246, 242, .5);
+  background: rgba(5, 11, 11, .6);
+}
+.aim-button svg { width: 25px; height: 25px; }
+.aim-button:active { transform: scale(.94); border-color: #ff7140; color: #ff7140; }
 .fire-button {
   width: 92px;
   height: 92px;
@@ -580,6 +677,8 @@ button { font: inherit; }
   .ammo-cluster { right: 135px; transform-origin: bottom right; }
   .hud-actions { top: 14px; right: 16px; }
   .mission-cluster { top: 15px; }
+  .minimap-panel { top: 13px; left: 14px; width: 112px; }
+  .weapon-rack { display: none; }
   .combat-banner { top: 15%; }
   .compact-overlay .pause-tip { display: none; }
 }
@@ -591,6 +690,7 @@ button { font: inherit; }
   .title-rule { width: min(82vw, 500px); }
   .start-overlay > .primary-action { margin-top: 33px; }
   .controls-grid { justify-content: center; gap: 24px; }
+  .menu-sensitivity { margin-top: 17px; }
   .menu-sound span { display: none; }
   .record-line { left: 22px; bottom: 20px; }
   .menu-sound { right: 18px; bottom: 14px; }
@@ -600,6 +700,15 @@ button { font: inherit; }
   .ammo-cluster { min-width: 150px; }
   .health-track { width: 74px; }
   .result-grid { grid-template-columns: repeat(3, minmax(90px, 1fr)); width: calc(100% - 32px); }
+}
+
+@media (max-height: 700px) and (orientation: landscape) {
+  .title-lockup h1 { font-size: clamp(4.5rem, 18vh, 7.4rem); }
+  .start-overlay > .primary-action { margin-top: 25px; }
+  .controls-grid { margin-top: 20px; }
+  .menu-sensitivity { margin-top: 14px; padding-block: 9px 11px; }
+  .compact-overlay h2 { margin-bottom: 24px; font-size: clamp(3.5rem, 14vh, 6rem); }
+  .pause-tip { margin-top: 15px; }
 }
 
 @media (orientation: portrait) and (hover: none) and (pointer: coarse) {
