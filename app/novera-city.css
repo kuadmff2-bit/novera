@@ -1,0 +1,29 @@
+.move-pad .mobile-actions {
+  position: fixed;
+  right: 28px;
+  bottom: 30px;
+}
+
+@media (hover: none) and (pointer: coarse) and (max-height: 700px) {
+  .move-pad .mobile-actions {
+    right: 18px;
+    bottom: 18px;
+    gap: 11px;
+  }
+
+  .move-pad .mobile-actions .weapon-button,
+  .move-pad .mobile-actions .reload-button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .move-pad .mobile-actions .aim-button {
+    width: 58px;
+    height: 58px;
+  }
+
+  .move-pad .mobile-actions .fire-button {
+    width: 82px;
+    height: 82px;
+  }
+}
